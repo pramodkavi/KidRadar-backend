@@ -13,7 +13,8 @@ mongoose.connect(dbUrl,connectionParams).then(() => {
 const PORT = 8080;
 const ChildCasesModel  = require("./models/childCases")
 const PreSchoolCasesCount  = require("./models/preSchoolCasesCount")
-
+const PreSchoolCasesModel  = require("./models/preSchoolCases")
+const SchoolModel  = require("./models/schools")
 
 const app = express();
 app.use(cors({ origin: true }));
@@ -121,3 +122,172 @@ app.post('/childcases', async (req, res) => {
   //////////////////////////////////////////////////////////////////////////////////////////////////////////
 
   
+  app.post('/preSchoolCases', async (req, res) => {
+    try {
+      const childData = req.body;
+      const PreSchoolCases = new PreSchoolCasesModel(childData);
+      const savedPreSchoolCases = await PreSchoolCases.save();
+      console.log("Saved savedPreSchoolCases:", savedPreSchoolCases);
+      res.status(201).json({ id: savedPreSchoolCases._id });
+    } catch (error) {
+      console.error("Error saving PreSchoolCases:", error);
+      res.status(500).json({ error: "Failed to save PreSchoolCases" });
+    }
+  });
+
+  app.delete('/preSchoolCases/:id', async (req, res) => {
+    try {
+      const id = req.params.id;
+      console.log("Deleting PreSchoolCases", id);
+      const deletePreSchoolCases = await PreSchoolCasesModel.findByIdAndDelete(id);
+      if (!deletePreSchoolCases) {
+        return res.status(404).json({ error: "Child case not found" });
+      }
+      console.log("Deleted child:", deletePreSchoolCases);
+      res.status(200).json({ message: "Child case deleted successfully" });
+    } catch (error) {
+      console.error("Error deleting child case:", error);
+      res.status(500).json({ error: "Failed to delete child case" });
+    }
+  });
+
+  app.put('/preSchoolCases/:id', async (req, res) => {
+    try {
+      const id = req.params.id;
+      const updateData = req.body;
+      const updatedPreSchoolCase = await PreSchoolCasesModel.findByIdAndUpdate(id, updateData, { new: true });
+      if (!updatedPreSchoolCase) {
+        return res.status(404).json({ error: "Child case not found" });
+      }
+      console.log("Updated case:",updatedPreSchoolCase);
+      res.status(200).json({ data: updatedPreSchoolCase });
+    } catch (error) {
+      console.error("Error updating case:", error);
+      res.status(500).json({ error: "Failed to update case" });
+    }
+  });
+
+  app.get('/preSchoolCases/:uid', async (req, res) => {
+    try {
+      const uid = req.params.uid;
+      const PreSchoolCases = await PreSchoolCasesModel.find({ uid: uid });
+      console.log(PreSchoolCases)
+      res.status(200).json({ data: PreSchoolCases });
+    } catch (error) {
+      console.error("Error fetching PreSchool cases:", error);
+      res.status(500).json({ error: "Failed to fetch PreSchool cases" });
+    }
+  });
+
+  //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  app.get('/preschools/:uid', async (req, res) => {
+    try {
+      const uid = req.params.uid;
+      const preschools = await PreSchoolModel.find({ uid: uid });
+      res.status(200).json({ data: preschools });
+    } catch (error) {
+      console.error("Error fetching preschools:", error);
+      res.status(500).json({ error: "Failed to fetch preschools" });
+    }
+  });
+  
+  // POST a new preschool
+  app.post('/preschools', async (req, res) => {
+    try {
+      const preschoolData = req.body;
+      const preschool = new PreSchoolModel(preschoolData);
+      const savedPreschool = await preschool.save();
+      res.status(201).json({ id: savedPreschool._id });
+    } catch (error) {
+      console.error("Error saving preschool:", error);
+      res.status(500).json({ error: "Failed to save preschool" });
+    }
+  });
+  
+  // DELETE a preschool
+  app.delete('/preschools/:id', async (req, res) => {
+    try {
+      const id = req.params.id;
+      const deletedPreschool = await PreSchoolModel.findByIdAndDelete(id);
+      if (!deletedPreschool) {
+        return res.status(404).json({ error: "Preschool not found" });
+      }
+      res.status(200).json({ message: "Preschool deleted successfully" });
+    } catch (error) {
+      console.error("Error deleting preschool:", error);
+      res.status(500).json({ error: "Failed to delete preschool" });
+    }
+  });
+  
+  // PUT (update) a preschool
+  app.put('/preschools/:id', async (req, res) => {
+    try {
+      const id = req.params.id;
+      const updateData = req.body;
+      const updatedPreschool = await PreSchoolModel.findByIdAndUpdate(id, updateData, { new: true });
+      if (!updatedPreschool) {
+        return res.status(404).json({ error: "Preschool not found" });
+      }
+      res.status(200).json({ data: updatedPreschool });
+    } catch (error) {
+      console.error("Error updating preschool:", error);
+      res.status(500).json({ error: "Failed to update preschool" });
+    }
+  });
+  
+
+  ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  app.get('/schools/:uid', async (req, res) => {
+    try {
+      const uid = req.params.uid;
+      const schools = await SchoolModel.find({ uid: uid });
+      res.status(200).json({ data: schools });
+    } catch (error) {
+      console.error("Error fetching schools:", error);
+      res.status(500).json({ error: "Failed to fetch schools" });
+    }
+  });
+  
+  // POST a new school
+  app.post('/schools', async (req, res) => {
+    try {
+      const schoolData = req.body;
+      const school = new SchoolModel(schoolData);
+      const savedSchool = await school.save();
+      res.status(201).json({ id: savedSchool._id });
+    } catch (error) {
+      console.error("Error saving school:", error);
+      res.status(500).json({ error: "Failed to save school" });
+    }
+  });
+  
+  // DELETE a school
+  app.delete('/schools/:id', async (req, res) => {
+    try {
+      const id = req.params.id;
+      const deletedSchool = await SchoolModel.findByIdAndDelete(id);
+      if (!deletedSchool) {
+        return res.status(404).json({ error: "School not found" });
+      }
+      res.status(200).json({ message: "School deleted successfully" });
+    } catch (error) {
+      console.error("Error deleting school:", error);
+      res.status(500).json({ error: "Failed to delete school" });
+    }
+  });
+  
+  // PUT (update) a school
+  app.put('/schools/:id', async (req, res) => {
+    try {
+      const id = req.params.id;
+      const updateData = req.body;
+      const updatedSchool = await SchoolModel.findByIdAndUpdate(id, updateData, { new: true });
+      if (!updatedSchool) {
+        return res.status(404).json({ error: "School not found" });
+      }
+      res.status(200).json({ data: updatedSchool });
+    } catch (error) {
+      console.error("Error updating school:", error);
+      res.status(500).json({ error: "Failed to update school" });
+    }
+  });

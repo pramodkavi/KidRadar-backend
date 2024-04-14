@@ -1,14 +1,6 @@
 const mongoose = require('mongoose');
 
-const preSchoolCases = new mongoose.Schema({
-  name: {
-    type: String,
-    required: true
-  },
-  age: {
-    type: Number,
-    required: true
-  },
+const school = new mongoose.Schema({
   address: {
     type: String,
     required: true
@@ -19,6 +11,10 @@ const preSchoolCases = new mongoose.Schema({
   },
   date: {
     type: Date,
+    required: true
+  },
+  description: {
+    type: String,
     required: true
   },
   division: {
@@ -35,19 +31,9 @@ const preSchoolCases = new mongoose.Schema({
       required: true
     }
   },
-  preSchool: {
-    _index: {
-      type: Number,
-      required: true
-    },
-    label: {
-      type: String,
-      required: true
-    },
-    value: {
-      type: String,
-      required: true
-    }
+  school: {
+    type: String,
+    required: true
   },
   uid: {
     type: String,
@@ -55,6 +41,6 @@ const preSchoolCases = new mongoose.Schema({
   }
 });
 
-const PreSchoolCasesModel = mongoose.model('preschoolcases', preSchoolCases);
+const SchoolModel = mongoose.model('schools', school);
 
-module.exports = PreSchoolCasesModel;
+module.exports = SchoolModel;
