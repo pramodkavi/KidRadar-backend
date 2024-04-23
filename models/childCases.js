@@ -68,9 +68,44 @@ const childCasesModel = new mongoose.Schema({
       required: true
     }
   },
+  institute: {
+    label: {
+      type: String,
+      required: false
+    },
+    value: {
+      type: String,
+      required: false
+    },
+    _index: {
+      type: Number,
+      required: false
+    }
+  },
   uid: {
     type: String,
     required: true
+  },
+  location: {
+    type: {
+      latitude: {
+        type: Number,
+        required: false
+      },
+      latitudeDelta: {
+        type: Number,
+        required: false
+      },
+      longitude: {
+        type: Number,
+        required: false
+      },
+      longitudeDelta: {
+        type: Number,
+        required: false
+      }
+    },
+    required: false
   }
 });
 
