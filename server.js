@@ -3,7 +3,8 @@ const bodyParser = require('body-parser');
 const cors = require("cors");
 const { response } = require("express");
 const mongoose = require("mongoose");
-const dbUrl = "mongodb+srv://pramodkavindu44:vWrLOcclVv6UPUxX@cluster0.0qraxh3.mongodb.net/kidradar_db?retryWrites=true&w=majority&appName=Cluster0"
+const dbUrl ="mongodb+srv://educonnectdevsl:SDvQ3lkpsvjZQdkw@cluster0.p0ymu18.mongodb.net/educonnect_db?retryWrites=true&w=majority&appName=Cluster0"
+// const dbUrl = "mongodb+srv://pramodkavindu44:vWrLOcclVv6UPUxX@cluster0.0qraxh3.mongodb.net/kidradar_db?retryWrites=true&w=majority&appName=Cluster0"
 const connectionParams={ useNewUrlParser: true, useUnifiedTopology: true }
 mongoose.connect(dbUrl,connectionParams).then(() => {
     console.log('//////////////Connected to database ')
