@@ -19,6 +19,7 @@ const PreSchoolModel  = require("./models/preSchool")
 const SchoolModel  = require("./models/schools")
 const InstituteModel = require("./models/institutes")
 const CourseModel = require("./models/courses")
+const UserModel  = require("./models/user")
 
 const app = express();
 app.use(cors({ origin: true }));
@@ -37,6 +38,49 @@ console.log('Received POST request with data:', req.body);
 res.status(200).json({ message: 'Data received successfully' });
 });
 
+/////////////////////////////////////////////////////////////////////////
+
+app.get('/user/:uid', async (req, res) => {
+  console.log("/////////////////////////////////////////// fetching user")
+  try {
+    const uid = req.params.uid;
+    const user = await UserModel.find({ uId: uid });
+    console.log(user)
+    res.status(200).json({ data: user });
+  } catch (error) {
+    console.error("Error fetching user cases:", error);
+    res.status(500).json({ error: "Failed to fetch user" });
+  }
+});
+
+app.post('/user', async (req, res) => {
+  try {
+    const userData = req.body;
+    const user = new UserModel(userData);
+    const savedUser = await user.save();
+    console.log("Saved user:", savedUser);
+    res.status(201).json({ id: savedUser._id });
+  } catch (error) {
+    console.error("Error saving user:", error);
+    res.status(500).json({ error: "Failed to save user" });
+  }
+});
+app.put('/user/:id', async (req, res) => {
+  try {
+    const id = req.params.id;
+    const updateData = req.body;
+    const updatedUser = await UserModel.findByIdAndUpdate(id, updateData, { new: true });
+    if (!updatedUser) {
+      return res.status(404).json({ error: "User case not found" });
+    }
+    console.log("Updated child:", updatedUser);
+    res.status(200).json({ data: updatedUser });
+  } catch (error) {
+    console.error("Error updating User:", error);
+    res.status(500).json({ error: "Failed to update User" });
+  }
+});
+//////////////////////////////////////////////////////////
 app.get('/childcases/:uid', async (req, res) => {
   try {
     const uid = req.params.uid;
