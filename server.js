@@ -5,12 +5,13 @@ const { response } = require("express");
 const mongoose = require("mongoose");
 const dbUrl =
   "mongodb+srv://educonnectdevsl:SDvQ3lkpsvjZQdkw@cluster0.p0ymu18.mongodb.net/educonnect_db?retryWrites=true&w=majority&appName=Cluster0";
-// const dbUrl = "mongodb+srv://pramodkavindu44:vWrLOcclVv6UPUxX@cluster0.0qraxh3.mongodb.net/kidradar_db?retryWrites=true&w=majority&appName=Cluster0"
 const connectionParams = { useNewUrlParser: true, useUnifiedTopology: true };
 mongoose
   .connect(dbUrl, connectionParams)
   .then(() => {
-    console.log(".................... Connected to database ....................");
+    console.log(
+      ".................... Connected to database ...................."
+    );
   })
   .catch((err) => {
     console.error(`Error connecting to the database. \n${err}`);
@@ -24,6 +25,7 @@ const PreSchoolModel = require("./models/preSchool");
 const SchoolModel = require("./models/schools");
 const InstituteModel = require("./models/institutes");
 const CourseModel = require("./models/courses");
+const UserModel = require("./models/user");
 
 const app = express();
 app.use(cors({ origin: true }));
@@ -40,6 +42,50 @@ app.get("/", (req, res) => {
 
 app.post("/saveChildCases", (req, res) => {
   res.status(200).json({ message: "Data received successfully" });
+});
+
+app.get("/user/:uid", async (req, res) => {
+  console.log("/////////////////////////////////////////// fetching user");
+  try {
+    const uid = req.params.uid;
+    const user = await UserModel.find({ uId: uid });
+    console.log(user);
+    res.status(200).json({ data: user });
+  } catch (error) {
+    console.error("Error fetching user cases:", error);
+    res.status(500).json({ error: "Failed to fetch user" });
+  }
+});
+
+app.post("/user", async (req, res) => {
+  try {
+    const userData = req.body;
+    const user = new UserModel(userData);
+    const savedUser = await user.save();
+    console.log("Saved user:", savedUser);
+    res.status(201).json({ id: savedUser._id });
+  } catch (error) {
+    console.error("Error saving user:", error);
+    res.status(500).json({ error: "Failed to save user" });
+  }
+});
+
+app.put("/user/:id", async (req, res) => {
+  try {
+    const id = req.params.id;
+    const updateData = req.body;
+    const updatedUser = await UserModel.findByIdAndUpdate(id, updateData, {
+      new: true,
+    });
+    if (!updatedUser) {
+      return res.status(404).json({ error: "User case not found" });
+    }
+    console.log("Updated child:", updatedUser);
+    res.status(200).json({ data: updatedUser });
+  } catch (error) {
+    console.error("Error updating User:", error);
+    res.status(500).json({ error: "Failed to update User" });
+  }
 });
 
 app.get("/childcases/:uid", async (req, res) => {
@@ -59,7 +105,7 @@ app.post("/childcases", async (req, res) => {
     const childData = req.body;
     const child = new ChildCasesModel(childData);
     const savedChild = await child.save();
-    
+
     res.status(201).json({ id: savedChild._id });
   } catch (error) {
     console.error("Error saving child:", error);
@@ -74,7 +120,7 @@ app.delete("/childcases/:id", async (req, res) => {
     if (!deletedChild) {
       return res.status(404).json({ error: "Child case not found" });
     }
-    
+
     res.status(200).json({ message: "Child case deleted successfully" });
   } catch (error) {
     console.error("Error deleting child:", error);
@@ -94,7 +140,7 @@ app.put("/childcases/:id", async (req, res) => {
     if (!updatedChild) {
       return res.status(404).json({ error: "Child case not found" });
     }
-    
+
     res.status(200).json({ data: updatedChild });
   } catch (error) {
     console.error("Error updating child:", error);
@@ -106,7 +152,7 @@ app.get("/preSchoolCasesCount/:uid", async (req, res) => {
   try {
     const uid = req.params.uid;
     const CasesCount = await PreSchoolCasesCount.find({ uid: uid });
-    
+
     res.status(200).json({ data: CasesCount });
   } catch (error) {
     console.error("Error fetching CasesCount :", error);
@@ -125,7 +171,7 @@ app.post("/preSchoolCasesCount", async (req, res) => {
     // Save the childData
     const CasesCount = new PreSchoolCasesCount(childData);
     const savedCount = await CasesCount.save();
-    
+
     res.status(201).json({ id: savedCount._id });
   } catch (error) {
     console.error("Error saving case count:", error);
@@ -140,7 +186,7 @@ app.delete("/preSchoolCasesCount/:id", async (req, res) => {
     if (!deletedChild) {
       return res.status(404).json({ error: "Child case not found" });
     }
-    
+
     res.status(200).json({ message: "Child case deleted successfully" });
   } catch (error) {
     console.error("Error deleting child:", error);
@@ -148,13 +194,12 @@ app.delete("/preSchoolCasesCount/:id", async (req, res) => {
   }
 });
 
-
 app.post("/preSchoolCases", async (req, res) => {
   try {
     const childData = req.body;
     const PreSchoolCases = new PreSchoolCasesModel(childData);
     const savedPreSchoolCases = await PreSchoolCases.save();
-    
+
     res.status(201).json({ id: savedPreSchoolCases._id });
   } catch (error) {
     console.error("Error saving PreSchoolCases:", error);
@@ -165,14 +210,14 @@ app.post("/preSchoolCases", async (req, res) => {
 app.delete("/preSchoolCases/:id", async (req, res) => {
   try {
     const id = req.params.id;
-    
+
     const deletePreSchoolCases = await PreSchoolCasesModel.findByIdAndDelete(
       id
     );
     if (!deletePreSchoolCases) {
       return res.status(404).json({ error: "Child case not found" });
     }
-    
+
     res.status(200).json({ message: "Child case deleted successfully" });
   } catch (error) {
     console.error("Error deleting child case:", error);
@@ -192,7 +237,7 @@ app.put("/preSchoolCases/:id", async (req, res) => {
     if (!updatedPreSchoolCase) {
       return res.status(404).json({ error: "Child case not found" });
     }
-    
+
     res.status(200).json({ data: updatedPreSchoolCase });
   } catch (error) {
     console.error("Error updating case:", error);
@@ -204,7 +249,7 @@ app.get("/preSchoolCases/:uid", async (req, res) => {
   try {
     const uid = req.params.uid;
     const PreSchoolCases = await PreSchoolCasesModel.find({ uid: uid });
-    
+
     res.status(200).json({ data: PreSchoolCases });
   } catch (error) {
     console.error("Error fetching PreSchool cases:", error);
@@ -444,11 +489,11 @@ app.put("/courses/:id", async (req, res) => {
   try {
     const id = req.params.id;
     const updateData = req.body;
-    
+
     const updatedCourse = await CourseModel.findByIdAndUpdate(id, updateData, {
       new: true,
     });
-    
+
     if (!updatedCourse) {
       return res.status(404).json({ error: "Course not found" });
     }
