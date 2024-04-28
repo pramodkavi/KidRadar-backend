@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 
-// Define schema
+// Define schema for child case
 const childCasesModel = new mongoose.Schema({
   name: {
     type: String,
