@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon server"
   },
   "keywords": [],
   "author": "",
@@ -14,6 +15,7 @@
     "cors": "^2.8.5",
     "express": "^4.19.2",
     "mongoose": "^8.3.1",
+    "nodeman": "^1.1.2",
     "nodemon": "^3.1.0"
   }
 }
