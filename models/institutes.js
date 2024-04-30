@@ -21,10 +21,6 @@ const institute = new mongoose.Schema({
     type: String,
     required: true,
   },
-  maxNVQ: {
-    type: Number,
-    required: true,
-  },
   name: {
     type: String,
     required: true,

@@ -23,20 +23,6 @@ const childDataSchema = new mongoose.Schema({
     type: Number,
     required: true
   },
-  preSchool: {
-    _index: {
-      type: Number,
-      required: true
-    },
-    label: {
-      type: String,
-      required: true
-    },
-    value: {
-      type: String,
-      required: true
-    }
-  },
   scholarsCounts: {
     type: Number,
     required: true
