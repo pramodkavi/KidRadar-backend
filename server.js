@@ -15,7 +15,7 @@ mongoose
     console.error(`Error connecting to the database. \n${err}`);
   });
 
-const PORT = 8080;
+const PORT = 8090;
 const app = express();
 app.use(cors({ origin: true }));
 app.use(bodyParser.json());
@@ -34,9 +34,7 @@ app.use("/user", require("./routes/user"));
 app.use("/childcases", require("./routes/childCases"));
 app.use("/preSchoolCasesCount", require("./routes/preSchoolCasesCount"));
 app.use("/preSchoolCases", require("./routes/preSchoolCases"));
-app.use("/preSchool", require("./routes/preSchool"));
-app.use("/school", require("./routes/school"));
-app.use("/institute", require("./routes/institute"));
-app.use("/course", require("./routes/course"));
-
-
+app.use("/preschools", require("./routes/preSchool"));
+app.use("/schools", require("./routes/school"));
+app.use("/institutes", require("./routes/institute"));
+app.use("/courses", require("./routes/course"));

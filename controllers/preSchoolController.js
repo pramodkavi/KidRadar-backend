@@ -9,11 +9,12 @@ exports.getPreSchools = async (req, res) => {
     console.error("Error fetching preschools:", error);
     res.status(500).json({ error: "Failed to fetch preschools" });
   }
-}
+};
 
 exports.createPreSchool = async (req, res) => {
   try {
     const preschoolData = req.body;
+    console.log(preschoolData);
     const preschool = new PreSchoolModel(preschoolData);
     const savedPreschool = await preschool.save();
     res.status(201).json({ id: savedPreschool._id });
@@ -21,7 +22,7 @@ exports.createPreSchool = async (req, res) => {
     console.error("Error saving preschool:", error);
     res.status(500).json({ error: "Failed to save preschool" });
   }
-}
+};
 
 exports.updatePreSchool = async (req, res) => {
   try {
@@ -41,7 +42,7 @@ exports.updatePreSchool = async (req, res) => {
     console.error("Error updating preschool:", error);
     res.status(500).json({ error: "Failed to update preschool" });
   }
-}
+};
 
 exports.deletePreSchool = async (req, res) => {
   try {
@@ -55,5 +56,4 @@ exports.deletePreSchool = async (req, res) => {
     console.error("Error deleting preschool:", error);
     res.status(500).json({ error: "Failed to delete preschool" });
   }
-}
-
+};
