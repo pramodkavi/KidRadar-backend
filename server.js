@@ -15,7 +15,7 @@ mongoose
     console.error(`Error connecting to the database. \n${err}`);
   });
 
-const PORT = 8090;
+const PORT = 8080;
 const app = express();
 app.use(cors({ origin: true }));
 app.use(bodyParser.json());

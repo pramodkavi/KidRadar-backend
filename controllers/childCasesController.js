@@ -1,15 +1,14 @@
 const ChildCasesModel = require("../models/childCases");
 
 exports.getChildCases = async (req, res) => {
-    try {
-        const uid = req.params.uid;
-        const childCases = await ChildCasesModel.find({ uid: uid });
-
-        res.status(200).json({ data: childCases });
-    } catch (error) {
-        console.error("Error fetching child cases:", error);
-        res.status(500).json({ error: "Failed to fetch child cases" });
-    }
+  try {
+    const uid = req.params.uid;
+    const childCases = await ChildCasesModel.find({ uid: uid });
+    res.status(200).json({ data: childCases });
+  } catch (error) {
+    console.error("Error fetching child cases:", error);
+    res.status(500).json({ error: "Failed to fetch child cases" });
+  }
 }
 
 exports.createChildCases = async (req, res) => {
@@ -30,7 +29,7 @@ exports.deleteChildCases = async (req, res) => {
         const id = req.params.id;
         const deletedChild = await ChildCasesModel.findByIdAndDelete(id);
         if (!deletedChild) {
-            return res.status(404).json({ error: "Child case not found" });
+        return res.status(404).json({ error: "Child case not found" });
         }
 
         res.status(200).json({ message: "Child case deleted successfully" });
@@ -42,21 +41,22 @@ exports.deleteChildCases = async (req, res) => {
 
 exports.updateChildCases = async (req, res) => {
     try {
-        const id = req.params.id;
-        const updateData = req.body;
-        const updatedChild = await ChildCasesModel.findByIdAndUpdate(
-            id,
-            updateData,
-            { new: true }
-        );
-        if (!updatedChild) {
-            return res.status(404).json({ error: "Child case not found" });
-        }
+    const id = req.params.id;
+    const updateData = req.body;
+    const updatedChild = await ChildCasesModel.findByIdAndUpdate(
+        id,
+        updateData,
+        { new: true }
+    );
+    if (!updatedChild) {
+        return res.status(404).json({ error: "Child case not found" });
+    }
 
-        res.status(200).json({ data: updatedChild });
-    } catch (error) {
-        console.error("Error updating child:", error);
-        res.status(500).json({ error: "Failed to update child" });
+    res.status(200).json({ data: updatedChild });
+    } 
+    catch (error) {
+    console.error("Error updating child:", error);
+    res.status(500).json({ error: "Failed to update child" });
     }
 }
 

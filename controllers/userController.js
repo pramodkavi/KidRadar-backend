@@ -12,18 +12,13 @@ exports.getAllUsers = async (req, res) => {
 
 exports.getUserById = async (req, res) => {
     try {
-        const id = req.params.id;
-        const user
-        = await UserModel.findById(id);
-        if (!user) {
-            return res.status(404).json({ error: "User not found" });
-        }
+        const uid = req.params.id;
+        const user = await UserModel.find({ uId: uid });
+        console.log(user);
         res.status(200).json({ data: user });
-    }
-    catch (error) {
-        console.error("Error fetching user:", error);
+    } catch (error) {
+        console.error("Error fetching user cases:", error);
         res.status(500).json({ error: "Failed to fetch user" });
-
     }
 }
 
@@ -32,6 +27,7 @@ exports.createUser = async (req, res) => {
         const userData = req.body;
         const user = new UserModel(userData);
         const savedUser = await user.save();
+        console.log("Saved user:", savedUser);
         res.status(201).json({ id: savedUser._id });
     } catch (error) {
         console.error("Error saving user:", error);
@@ -44,16 +40,16 @@ exports.updateUser = async (req, res) => {
         const id = req.params.id;
         const updateData = req.body;
         const updatedUser = await UserModel.findByIdAndUpdate(id, updateData, {
-            new: true,
+        new: true,
         });
         if (!updatedUser) {
-            return res.status(404).json({ error: "User not found" });
+        return res.status(404).json({ error: "User case not found" });
         }
+        console.log("Updated child:", updatedUser);
         res.status(200).json({ data: updatedUser });
-    }
-    catch (error) {
-        console.error("Error updating user:", error);
-        res.status(500).json({ error: "Failed to update user" });
+    } catch (error) {
+        console.error("Error updating User:", error);
+        res.status(500).json({ error: "Failed to update User" });
     }
 }
 
