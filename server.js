@@ -413,6 +413,7 @@ app.post("/institutes", async (req, res) => {
 // DELETE institute by ID
 app.delete("/institutes/:id", async (req, res) => {
   try {
+    console.log("----------------------------------------------------------------");
     const id = req.params.id;
     const deletedInstitute = await InstituteModel.findByIdAndDelete(id);
     if (!deletedInstitute) {
