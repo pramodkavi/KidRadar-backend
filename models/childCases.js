@@ -57,15 +57,15 @@ const childCasesModel = new mongoose.Schema({
   school: {
     label: {
       type: String,
-      required: true
+      required: false
     },
     value: {
       type: String,
-      required: true
+      required: false
     },
     _index: {
       type: Number,
-      required: true
+      required: false
     }
   },
   institute: {
